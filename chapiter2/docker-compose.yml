@@ -5,25 +5,20 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      postgres_db:
-        condition: service_healthy
-      mongodb:
+      postgres:
+        condition: service_started
+      mongo:
         condition: service_started
       mongo-express:
         condition: service_started
       neo4j_db:
         condition: service_started
         
-  postgres_db:
+  postgres:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: example
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 1s
-      timeout: 5s
-      retries: 10
+      POSTGRES_PASSWORD: root
   
   adminer:
     image: adminer
@@ -31,7 +26,7 @@ services:
     ports:
       - 8080:8080
 
-  mongodb:
+  mongo:
     image: mongo
     restart: always
     environment:
@@ -46,7 +41,7 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
       ME_CONFIG_BASICAUTH: false
   
   neo4j_db:
