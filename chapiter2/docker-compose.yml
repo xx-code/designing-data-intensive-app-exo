@@ -11,6 +11,8 @@ services:
         condition: service_started
       mongo-express:
         condition: service_started
+      neo4j_db:
+        condition: service_started
         
   postgres_db:
     image: postgres
@@ -34,7 +36,7 @@ services:
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_PASSWORD: root
     
   mongo-express:
     image: mongo-express
@@ -43,6 +45,15 @@ services:
       - 8081:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
       ME_CONFIG_BASICAUTH: false
+  
+  neo4j_db:
+    image: neo4j:5.26.0
+    restart: always
+    environment:
+      - NEO4J_AUTH=neo4j/examplXms1024m
+    ports:
+      - 7474:7474
+    
